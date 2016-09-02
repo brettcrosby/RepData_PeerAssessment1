@@ -2,7 +2,8 @@
 title: "Reproducible Research: Peer Assessment 1"
 output: 
   html_document:
-    keep_md: true
+    keep_md: yes
+    self_contained: no
 ---
 ## Introduction
 
@@ -14,7 +15,7 @@ This assignment makes use of data from a personal activity monitoring device. Th
 There are some global options that I'd like to set so I don't have to set them in each code chunk.
 
 ```{r Set_Global_Options}
-knitr::opts_chunk$set(echo=TRUE, warning=FALSE)
+knitr::opts_chunk$set(fig.width=8, fig.height=6, fig.path='Figures/',echo=TRUE, warning=FALSE)
 ```
 
 That being done, now load the required libraries.

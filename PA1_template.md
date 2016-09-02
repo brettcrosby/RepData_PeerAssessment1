@@ -10,11 +10,11 @@ There are some global options that I'd like to set so I don't have to set them i
 
 
 ```r
-knitr::opts_chunk$set(echo=TRUE, warning=FALSE)
-# knitr::opts_chunk$set(echo=FALSE, warning=FALSE)
+knitr::opts_chunk$set(fig.width=8, fig.height=6, fig.path='Figures/',echo=TRUE, warning=FALSE)
 ```
 
 That being done, now load the required libraries.
+
 
 ```
 ## 
@@ -48,7 +48,7 @@ Read in the data file. I don't want to waste computing power by unzipping the fi
 
 
 ```r
-# Define the names of the zip file and the unzipped data file.
+# Define the names and locations of the zip file and the unzipped data file.
 df.zip <- "./data/activity.zip"
 df.csv <- "./data/activity/activity.csv"
 
@@ -58,7 +58,11 @@ if (!file.exists(df.csv)) {
 }
 
 # Load the data
-df <- read.csv(df.csv, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+df <- read.csv(df.csv, 
+               header = TRUE, 
+               sep = ",",
+               stringsAsFactors = FALSE,
+               colClasses = c(date = "Date"))
 ```
 
 Now that the data has been read in, I will run a number of pre-processing steps to get the data into a usable format. The first thing to do is to create a datatime variable which is a concatenation of the `df$date` and `df$interval` variables. To do this I will:
@@ -91,6 +95,7 @@ spd <- aggregate(steps ~ date, df, sum)
 
 Now plot this data as a histogram.
 
+
 ```r
 q1.plot <- ggplot(spd, aes(steps)) + 
     geom_histogram(binwidth = 1000) +
@@ -99,7 +104,7 @@ q1.plot <- ggplot(spd, aes(steps)) +
 print(q1.plot) 
 ```
 
-![](PA1_template_files/figure-html/Q1-Histogram-1.png)<!-- -->
+![](Figures/Q1-Histogram-1.png)<!-- -->
 
 The final part of this question is to calculate the mean and median of the total number of steps per day. This can be done in two ways. Either calculate these values individually as follows:
 
@@ -163,7 +168,7 @@ q2.plot <- ggplot(q2.data, aes(tod, steps)) +
 print(q2.plot)
 ```
 
-![](PA1_template_files/figure-html/Q2-Plot-1.png)<!-- -->
+![](Figures/Q2-Plot-1.png)<!-- -->
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -212,7 +217,7 @@ head(q3.imputed)
 ## Groups: date [1]
 ## 
 ##         date interval steps
-##        <chr>    <chr> <int>
+##       <date>    <chr> <int>
 ## 1 2012-10-01     0000    91
 ## 2 2012-10-01     0005    18
 ## 3 2012-10-01     0010     7
@@ -220,6 +225,7 @@ head(q3.imputed)
 ## 5 2012-10-01     0020     4
 ## 6 2012-10-01     0025   111
 ```
+
 We can now repeat the test to see if there are any remaining `NA` values.
 
 
@@ -252,6 +258,6 @@ q4.plot <- ggplot(q4.data, aes(tod, steps)) +
 print(q4.plot)
 ```
 
-![](PA1_template_files/figure-html/Q4-1.png)<!-- -->
+![](Figures/Q4-1.png)<!-- -->
 
-As you can see from the plot, there is considerably more movement in the period from 6:00am until 9:00am on weekdays.This would correspond with the activity of getting ready and then going to work. Weekends, on the other hand, show lower levels of movement that is spread more evenly throughout the day.
+As you can see from the plot, there is considerably more movement in the period from 6:00am until 9:00am on weekdays. This would correspond with the activity of getting ready and then going to work however that is just speculation and not supported in the data in any other way. Weekends, on the other hand, show lower levels of movement that is spread more evenly throughout the day.
